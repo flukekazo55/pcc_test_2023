@@ -1,0 +1,18 @@
+<form
+  class="d-flex justify-content-between align-items-center mt-3"
+  [formGroup]="formGroup"
+>
+  <div>1. Total value of texable electronic excusive of VAT</div>
+  <div>
+    <input
+      type="text"
+      class="form-control"
+      [class.is-invalid]="checkFormInvalid()"
+      formControlName="saleAmount"
+      placeholder="THB"
+      mask="separator.2"
+      thousandSeparator=""
+    />
+    <span class="text-danger" *ngIf="checkFormInvalid()">Invalid Data</span>
+  </div>
+</form>

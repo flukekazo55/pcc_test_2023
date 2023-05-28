@@ -1,0 +1,10 @@
+<form [formGroup]="formGroup">
+  <select
+    class="form-select"
+    [class.is-invalid]="checkFormInvalid()"
+    aria-label="Select Type"
+    formControlName="taxMonthType"
+  >
+    <option [value]="0">On-Time</option>
+  </select>
+</form>

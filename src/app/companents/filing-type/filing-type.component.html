@@ -1,0 +1,41 @@
+<!-- Type of filing  -->
+<form class="row p-2" [formGroup]="formGroup">
+  <div class="col-sm-12 col-md-6 col-lg-2">
+    <div class="form-check">
+      <input
+        class="form-check-input"
+        type="radio"
+        formControlName="filingType"
+        [value]="0"
+      />
+      <label class="form-check-label" for="flexRadioDefault1">
+        Ordinaly Filing
+        <img
+          src="assets/icons/help.png"
+          alt=""
+          class="form-info-icon ml-1"
+          title="Ordinaly Filing"
+        />
+      </label>
+    </div>
+  </div>
+  <div class="col-sm-12 col-md-6 col-lg-2">
+    <div class="form-check">
+      <input
+        class="form-check-input"
+        type="radio"
+        formControlName="filingType"
+        [value]="1"
+      />
+      <label class="form-check-label" for="flexRadioDefault1">
+        Additional Filing
+        <img
+          src="assets/icons/help.png"
+          alt=""
+          class="form-info-icon ml-1"
+          title="Additional Filing"
+        />
+      </label>
+    </div>
+  </div>
+</form>

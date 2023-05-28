@@ -1,0 +1,258 @@
+<app-header></app-header>
+
+<div class="container">
+  <div class="d-flex justify-content-center my-5">
+    <h1 class="font-weight-bold">
+      <strong>Submit Tax Filling</strong>
+    </h1>
+  </div>
+
+  <div class="center-mat-stepper-header">
+    <mat-stepper [linear]="isLinear" labelPosition="bottom" #stepper>
+      <ng-template matStepperIcon="edit">
+        <mat-icon>check</mat-icon>
+      </ng-template>
+
+      <mat-step [stepControl]="step1FormGroup">
+        <form [formGroup]="step1FormGroup" (ngSubmit)="step1Submit()">
+          <ng-template matStepLabel>Input Detail</ng-template>
+          <!-- CARD -->
+          <div class="card mt-5 w-100 p-3" style="width: 18rem">
+            <div class="card-body">
+              <!-- 1. Tax Filing Detial -->
+              <h5 class="card-title mb-4">1. Tax Filing Detial</h5>
+              <!-- Type of filing -->
+              <div class="col-12 mb-2 p-2">
+                <label
+                  >Type of filing <span class="text-danger ml-3">*</span></label
+                >
+              </div>
+              <!-- Type of filing -->
+              <app-filing-type
+                [formGroup]="step1FormGroup"
+                (filingForm)="setStep1Value('filingType', $event)"
+              ></app-filing-type>
+              <!-- Vat Month  -->
+              <div class="row mt-3 mb-2">
+                <div class="col-sm-12 col-md-12 col-lg-6">
+                  <label class="mb-2 p-2"
+                    >Vat Month <span class="text-danger ml-3">*</span></label
+                  >
+                  <div class="d-flex flex-row">
+                    <!-- Month -->
+                    <app-month
+                      class="w-50 p-2"
+                      [formGroup]="step1FormGroup"
+                      (filingForm)="setStep1Value('month', $event)"
+                    ></app-month>
+                    <!-- Year -->
+                    <app-year
+                      class="w-50 p-2"
+                      [formGroup]="step1FormGroup"
+                      (filingForm)="setStep1Value('year', $event)"
+                    ></app-year>
+                  </div>
+                </div>
+                <div
+                  class="col-sm-12 col-md-12 col-lg-6"
+                  *ngIf="showTaxMonthType()"
+                >
+                  <label class="mb-2 p-2"
+                    >Type <span class="text-danger ml-3">*</span></label
+                  >
+                  <div class="d-flex flex-row">
+                    <app-tax-month-type
+                      class="p-2"
+                      [formGroup]="step1FormGroup"
+                      (filingForm)="setStep1Value('taxMonthType', $event)"
+                    ></app-tax-month-type>
+                  </div>
+                </div>
+              </div>
+              <!-- 2. Tax Computation -->
+              <h5 class="card-title mt-5">
+                <div class="d-flex justify-content-between">
+                  <div>2. Tax Computation</div>
+                  <div>
+                    <a href="">View Exchange Rate</a>
+                  </div>
+                </div>
+              </h5>
+              <!-- Provide total value texable electronic service  -->
+              <div class="col-12 mt-3 mb-2 p-2">
+                <label
+                  ><strong
+                    >Provide total value texable electronic service</strong
+                  ><span class="text-danger ml-3">*</span></label
+                >
+                <!-- Sale Amount -->
+                <app-sale-amount
+                  class="p-2"
+                  [formGroup]="step1FormGroup"
+                  (filingForm)="setStep1Value('saleAmount', $event)"
+                ></app-sale-amount>
+                <!-- Sale Amount -->
+                <app-tax-amount
+                  class="p-2"
+                  [formGroup]="step1FormGroup"
+                  (filingForm)="setStep1Value('taxAmount', $event)"
+                ></app-tax-amount>
+              </div>
+              <ng-container *ngIf="showTaxMonthType()">
+                <div class="col-12 mt-4 mb-2 p-2">
+                  <label class="mb-2"
+                    ><strong
+                      >In case of late filing and payment, or addional
+                      filing</strong
+                    ></label
+                  >
+                  <!-- Surchange-->
+                  <app-surcharge
+                    class="p-2"
+                    [formGroup]="step1FormGroup"
+                  ></app-surcharge>
+                  <app-penalty class="p-2" [formGroup]="step1FormGroup">
+                  </app-penalty>
+                  <app-total-amount
+                    class="p-2"
+                    [formGroup]="step1FormGroup"
+                  ></app-total-amount>
+                </div>
+              </ng-container>
+            </div>
+          </div>
+          <!-- BTN BACK & SUBMIT -->
+          <div class="d-flex flex-row mt-4">
+            <div class="p-3">
+              <button type="button" class="btn btn-secondary">Back</button>
+            </div>
+            <div class="p-3">
+              <button type="submit" class="btn btn-primary">Next</button>
+            </div>
+          </div>
+        </form>
+      </mat-step>
+
+      <mat-step>
+        <ng-template matStepLabel>Review & Confirm</ng-template>
+        <!-- CARD -->
+        <div class="card mt-5 w-100 p-3" style="width: 18rem">
+          <div class="card-body">
+            <!-- Tax Filing Detial -->
+            <h5 class="card-title mb-4">Tax Filing Detial</h5>
+
+            <!-- Type of filing -->
+            <div class="row p-2 mb-2">
+              <div class="col-sm-12 col-md-6 col-lg-2">
+                <strong>Type of filing</strong>
+              </div>
+              <div class="col-sm-12 col-md-6 col-lg-10">
+                <ng-container
+                  *ngIf="getStep1Value('filingType') === 0; else filingTypeElse"
+                >
+                  Ordinaly Filing
+                </ng-container>
+                <ng-template #filingTypeElse> Additional Filing </ng-template>
+              </div>
+            </div>
+
+            <!-- VAT Month -->
+            <div class="row p-2 mb-2">
+              <div class="col-sm-12 col-md-6 col-lg-2">
+                <strong>VAT Month</strong>
+              </div>
+              <div class="col-sm-12 col-md-6 col-lg-10">
+                {{ getMonth() }}
+                {{ getStep1Value("year") }}
+              </div>
+            </div>
+
+            <!-- VAT Month Type -->
+            <ng-container *ngIf="showTaxMonthType()">
+              <div class="row p-2 mb-2">
+                <div class="col-sm-12 col-md-6 col-lg-2">
+                  <strong>VAT Month Type</strong>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-10">
+                  <ng-container
+                    *ngIf="
+                      getStep1Value('taxMonthType') === 0;
+                      else taxMonthTypeElse
+                    "
+                  >
+                    On-Time
+                  </ng-container>
+                  <ng-template #taxMonthTypeElse> - </ng-template>
+                </div>
+              </div>
+            </ng-container>
+
+            <!-- Tax Computation -->
+            <h5 class="card-title my-4">Tax Computation</h5>
+
+            <!-- Total value of taxable electronic table service exclusive of VAT -->
+            <div class="d-flex justify-content-between p-2">
+              <div>
+                <strong
+                  >Total value of taxable electronic table service exclusive of
+                  VAT</strong
+                >
+              </div>
+              <div>
+                {{ getStep1Value("saleAmount") | number : "1.2-2" }} THB
+              </div>
+            </div>
+
+            <!-- Total VAT to be remitted -->
+            <div class="d-flex justify-content-between p-2">
+              <div>
+                <strong>Total VAT to be remitted</strong>
+                <p>
+                  (7% of Total value of taxable electronic table service
+                  exclusive of VAT)
+                </p>
+              </div>
+              <div>{{ getStep1Value("taxAmount") | number : "1.2-2" }} THB</div>
+            </div>
+
+            <ng-container *ngIf="showTaxMonthType()">
+              <!-- Surchange -->
+              <div class="d-flex justify-content-between p-2">
+                <div>
+                  <strong>Surchange</strong>
+                </div>
+                <div>
+                  {{ getStep1Value("surchange") | number : "1.2-2" }} THB
+                </div>
+              </div>
+
+              <!-- Penalty -->
+              <div class="d-flex justify-content-between p-2">
+                <div>
+                  <strong>Penalty</strong>
+                </div>
+                <div>{{ getStep1Value("penalty") | number : "1.2-2" }} THB</div>
+              </div>
+            </ng-container>
+
+            <!-- Total Amount Payable -->
+            <div class="d-flex justify-content-between p-2">
+              <div>
+                <strong>Total Amount Payable</strong>
+              </div>
+              <div>
+                <strong>{{ getTotalPayable() | number : "1.2-2" }} THB</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- BTN SUBMIT -->
+        <div class="d-flex justify-content-center mt-4">
+          <button type="button" class="btn btn-primary" (click)="step2Submit()">
+            Create & Submit
+          </button>
+        </div>
+      </mat-step>
+    </mat-stepper>
+  </div>
+</div>

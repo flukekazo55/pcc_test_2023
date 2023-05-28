@@ -1,0 +1,12 @@
+<form [formGroup]="formGroup">
+  <select
+    class="form-select"
+    [class.is-invalid]="checkFormInvalid()"
+    aria-label="Select Month"
+    formControlName="month"
+  >
+    <option [value]="option.id" *ngFor="let option of months">
+      {{ option.monthName }}
+    </option>
+  </select>
+</form>

@@ -1,0 +1,12 @@
+<form [formGroup]="formGroup">
+  <select
+    class="form-select"
+    [class.is-invalid]="checkFormInvalid()"
+    aria-label="Select Year"
+    formControlName="year"
+  >
+    <option [value]="option.yearName" *ngFor="let option of years">
+      {{ option.yearName }}
+    </option>
+  </select>
+</form>

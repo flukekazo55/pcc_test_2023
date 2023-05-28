@@ -1,0 +1,19 @@
+<form
+  class="d-flex justify-content-between align-items-center mt-2"
+  [formGroup]="formGroup"
+>
+  <div>2. Total VAT to be remitted (7% of 1.)</div>
+  <div>
+    <input
+      type="text"
+      class="form-control"
+      [class.is-invalid]="checkFormInvalid()"
+      formControlName="taxAmount"
+      placeholder="THB"
+      mask="separator.2"
+      thousandSeparator=""
+    />
+    <span class="text-danger" *ngIf="checkFormInvalid()">Invalid Data</span>
+    <span class="text-danger" *ngIf="checkTaxInvalid()">Invalid Tax</span>
+  </div>
+</form>
